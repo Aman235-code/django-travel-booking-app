@@ -1,25 +1,22 @@
 {% extends 'base.html' %} 
-
 {% load static %} 
 
-{% block title %}Profile{% endblock%} 
+{% block title %}Profile{% endblock %} 
 
 {% block content %}
-
-
 <div class="container mt-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-sm">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
         <div class="card-header bg-primary text-white">
           <h4 class="mb-0">Update Profile</h4>
         </div>
         <div class="card-body">
-          <form method="POST">
+          <form method="POST" novalidate>
             {% csrf_token %}
 
             <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
+              <label for="username" class="form-label fw-semibold">Username</label>
               <input
                 type="text"
                 class="form-control"
@@ -31,7 +28,7 @@
             </div>
 
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label fw-semibold">Email</label>
               <input
                 type="email"
                 class="form-control"
@@ -42,18 +39,21 @@
             </div>
 
             <div class="mb-3">
-              <label for="password" class="form-label">New Password</label>
+              <label for="password" class="form-label fw-semibold">New Password</label>
               <input
                 type="password"
                 class="form-control"
                 id="password"
                 name="password"
+                placeholder="Leave blank to keep current password"
               />
               <div class="form-text">Leave blank to keep current password.</div>
             </div>
 
-            <button type="submit" class="btn btn-success">Update</button>
-            <a href="{% url 'home' %}" class="btn btn-secondary ms-2">Back</a>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back</a>
+              <button type="submit" class="btn btn-success px-4">Update</button>
+            </div>
           </form>
         </div>
       </div>

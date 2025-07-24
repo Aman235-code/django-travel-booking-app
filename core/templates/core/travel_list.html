@@ -1,77 +1,98 @@
-
-{% extends 'base.html' %} {% block title %}Available Travel Options{% endblock%}
+{% extends 'base.html' %}
+{% block title %}Available Travel Options{% endblock %}
 {% block content %}
 
-<h2 class="mb-3">Available Travel Options</h2>
+<h2 class="mb-4 fw-bold text-primary">Available Travel Options</h2>
+
 <form method="get" class="row g-2 mb-4">
-  <div class="col-md-2">
+  <div class="col-6 col-md-2">
     <select name="type" class="form-select">
       <option value="">All Types</option>
-      <option value="Flight">Flight</option>
-      <option value="Train">Train</option>
-      <option value="Bus">Bus</option>
+      <option value="Flight" {% if request.GET.type == "Flight" %}selected{% endif %}>Flight</option>
+      <option value="Train" {% if request.GET.type == "Train" %}selected{% endif %}>Train</option>
+      <option value="Bus" {% if request.GET.type == "Bus" %}selected{% endif %}>Bus</option>
     </select>
   </div>
-  <div class="col-md-3">
+  <div class="col-6 col-md-3">
     <input
       type="text"
       name="source"
       class="form-control"
       placeholder="Source"
+      value="{{ request.GET.source }}"
     />
   </div>
-  <div class="col-md-3">
+  <div class="col-6 col-md-3">
     <input
       type="text"
       name="destination"
       class="form-control"
       placeholder="Destination"
+      value="{{ request.GET.destination }}"
     />
   </div>
-  <div class="col-md-2">
-    <input type="date" name="date" class="form-control" />
+  <div class="col-6 col-md-2">
+    <input type="date" name="date" class="form-control" value="{{ request.GET.date }}" />
   </div>
-  <div class="col-md-2">
+  <div class="col-12 col-md-2">
     <button class="btn btn-outline-primary w-100">Filter</button>
   </div>
 </form>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Route</th>
-      <th>Date and Time</th>
-      <th>Price</th>
-      <th>Seats</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for travel in travels %}
-    <tr>
-      <td>{{ travel.travel_type }}</td>
-      <td>{{ travel.source }} → {{ travel.destination }}</td>
-      <td>{{ travel.date_time }}</td>
-      <td>₹{{ travel.price }}</td>
-      <td>{{ travel.available_seats }}</td>
-      <td>
-        {% if travel.available_seats == 0 %}
-        <span class="badge bg-secondary">Fully Booked</span>
-        {% elif travel.travel_id in booked_ids %}
-        <span class="badge bg-danger">Already Booked</span>
-        {% else %}
-        <a href="{% url 'book' travel.pk %}" class="btn btn-sm btn-success"
-          >Book</a
-        >
-        {% endif %}
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="6" class="text-center">No travel options found.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-hover table-bordered align-middle text-sm">
+    <thead class="table-dark text-center">
+      <tr>
+        <th>Type</th>
+        <th>Route</th>
+        <th>Date and Time</th>
+        <th>Price</th>
+        <th>Seats</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for travel in travels %}
+      <tr>
+        <td><strong>{{ travel.travel_type }}</strong></td>
+        <td>
+          <span class="text-muted">{{ travel.source }}</span>
+          <span class="mx-1">&rarr;</span>
+          <span class="text-muted">{{ travel.destination }}</span>
+        </td>
+        <td>
+          <span class="d-block">{{ travel.date_time|date:"Y-m-d" }}</span>
+          <small class="text-muted">{{ travel.date_time|date:"H:i" }}</small>
+        </td>
+        <td><span class="text-success fw-semibold">₹{{ travel.price }}</span></td>
+        <td>
+          {% if travel.available_seats == 0 %}
+            <span class="text-danger">0</span>
+          {% else %}
+            {{ travel.available_seats }}
+          {% endif %}
+        </td>
+        <td>
+          {% if travel.available_seats == 0 %}
+            <span class="badge bg-secondary">Fully Booked</span>
+          {% elif travel.id in booked_ids %}
+            <span class="badge bg-danger">Already Booked</span>
+          {% else %}
+            <a href="{% url 'book_travel' travel.pk %}" class="btn btn-sm btn-success">
+              Book
+            </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" class="text-center text-muted py-4">
+          No travel options found.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

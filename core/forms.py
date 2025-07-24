@@ -19,3 +19,6 @@ class ProfileUpdateForm(UserChangeForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+class BookingForm(forms.Form):
+    seats = forms.IntegerField(min_value=1, label='Number of Seats')

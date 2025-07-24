@@ -1,23 +1,61 @@
-
-{% extends 'base.html' %} 
-
-
-{% block title %}Home - Travel Booking{% endblock %}
-
-
+{% extends 'base.html' %} {% block title %}Home - Travel Booking{% endblock %}
 {% block content %}
+<style>
+  .hero-section {
+    background: linear-gradient(135deg, #f0f4ff, #e2f0fb);
+    padding: 80px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  .hero-heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    animation: fadeInDown 1s ease-in-out;
+  }
+  .hero-btn {
+    transition: all 0.3s ease;
+  }
+  .hero-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+  }
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
 
+<div class="container my-5">
+  <div class="hero-section text-center">
+    <h1 class="hero-heading mb-4">Welcome to the Travel Booking App</h1>
 
-<div class="text-center py-5">
-  <h1 class="mb-4">Welcome to the Travel Booking App</h1>
-
-  {% if user.is_authenticated %}
-  <a href="{% url 'my_bookings' %}" class="btn btn-outline-primary btn-lg">
-    View My Bookings
-  </a>
-  {% else %}
-  <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-2">Login</a>
-  <a href="{% url 'register' %}" class="btn btn-secondary btn-lg">Register</a>
-  {% endif %}
+    {% if user.is_authenticated %}
+    <a
+      href="{% url 'my_bookings' %}"
+      class="btn btn-outline-primary btn-lg hero-btn"
+    >
+      View My Bookings
+    </a>
+    {% else %}
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="{% url 'login' %}" class="btn btn-primary btn-lg hero-btn px-4">
+        Login
+      </a>
+      <a
+        href="{% url 'register' %}"
+        class="btn btn-secondary btn-lg hero-btn px-4"
+      >
+        Register
+      </a>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

@@ -3,23 +3,35 @@
 {% block title %}Book Travel{% endblock %} 
 
 {% block content %}
-<h2>Book Travel</h2>
 
-<div class="card">
+<h2 class="mb-4 fw-bold text-primary">Book Travel</h2>
+
+<div class="card shadow-sm">
   <div class="card-body">
-    <h5 class="card-title">
-      {{ travel.travel_type }} - {{ travel.source }} to {{ travel.destination }}
-    </h5>
-    <p class="card-text">
-      Date Time: {{ travel.date_time }}<br />
-      Price per Seat: ₹{{ travel.price }}<br />
-      Available Seats: {{ travel.available_seats }}
-    </p>
+    
+    <h2 class="card-title text-center mb-3 text-dark">
+      Booking for  {{ travel.travel_type }} <span> from</span>
+      <span class="text-muted"
+        >{{ travel.source }} &rarr; {{ travel.destination }}</span
+      >
+    </h2>
 
-    <form method="POST">
+    <ul class="list-unstyled mb-4">
+      <li>
+        <strong style="color:red;">Date and Time:</strong> {{ travel.date_time|date:"Y-m-d H:i" }}
+      </li>
+      <li><strong style="color:red;">Price per Seat:</strong> ₹{{ travel.price }}</li>
+      <li><strong style="color:red;">Available Seats:</strong> {{ travel.available_seats }}</li>
+    </ul>
+
+
+    <form method="POST" class="row g-3">
       {% csrf_token %}
-      <div class="mb-3">
-        <label for="num_seats" class="form-label">Number of Seats</label>
+
+      <div class="col-md-6">
+        <label for="num_seats" class="form-label fw-semibold"
+          >Number of Seats</label
+        >
         <input
           type="number"
           name="num_seats"
@@ -30,9 +42,32 @@
           required
         />
       </div>
-      <button type="submit" class="btn btn-success">Confirm Booking</button>
-      <a href="{% url 'travel_list' %}" class="btn btn-secondary">Back</a>
+
+
+      <div class="col-md-6">
+        <label for="booking_date" class="form-label fw-semibold"
+          >Booking Date and Time</label
+        >
+        <input
+          type="datetime-local"
+          name="booking_date"
+          id="booking_date"
+          class="form-control"
+          required
+        />
+        <small class="text-muted">
+          Must be before travel time: {{ travel.date_time|date:"Y-m-d H:i" }}
+        </small>
+      </div>
+
+      <div class="col-12 d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-success px-4">
+          Confirm Booking
+        </button>
+        <a href="{% url 'travel_list' %}" class="btn btn-secondary"> Back </a>
+      </div>
     </form>
   </div>
 </div>
+
 {% endblock %}

@@ -4,9 +4,27 @@
 
 {% block content %}
 
-<h2 class="mb-3">Book Travel</h2>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit" class="btn btn-success">Confirm Booking</button>
-</form>
+<h2 class="mb-4 fw-bold text-primary">Book Travel</h2>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form method="post" class="needs-validation" novalidate>
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        {{ form.as_p }}
+      </div>
+
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-success px-4">
+          Confirm Booking
+        </button>
+        <a href="{% url 'travel_list' %}" class="btn btn-outline-secondary">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
