@@ -1,0 +1,38 @@
+{% extends 'base.html' %} 
+
+{% block title %}Book Travel{% endblock %} 
+
+{% block content %}
+<h2>Book Travel</h2>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ travel.travel_type }} - {{ travel.source }} to {{ travel.destination }}
+    </h5>
+    <p class="card-text">
+      Date Time: {{ travel.date_time }}<br />
+      Price per Seat: ₹{{ travel.price }}<br />
+      Available Seats: {{ travel.available_seats }}
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="num_seats" class="form-label">Number of Seats</label>
+        <input
+          type="number"
+          name="num_seats"
+          id="num_seats"
+          class="form-control"
+          min="1"
+          max="{{ travel.available_seats }}"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-success">Confirm Booking</button>
+      <a href="{% url 'travel_list' %}" class="btn btn-secondary">Back</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

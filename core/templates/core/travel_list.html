@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %} {% block title %}Available Travel Options{% endblock%}
+{% block content %}
+
+<h2 class="mb-3">Available Travel Options</h2>
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-2">
+    <select name="type" class="form-select">
+      <option value="">All Types</option>
+      <option value="Flight">Flight</option>
+      <option value="Train">Train</option>
+      <option value="Bus">Bus</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <input
+      type="text"
+      name="source"
+      class="form-control"
+      placeholder="Source"
+    />
+  </div>
+  <div class="col-md-3">
+    <input
+      type="text"
+      name="destination"
+      class="form-control"
+      placeholder="Destination"
+    />
+  </div>
+  <div class="col-md-2">
+    <input type="date" name="date" class="form-control" />
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-outline-primary w-100">Filter</button>
+  </div>
+</form>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Route</th>
+      <th>Date and Time</th>
+      <th>Price</th>
+      <th>Seats</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for travel in travels %}
+    <tr>
+      <td>{{ travel.travel_type }}</td>
+      <td>{{ travel.source }} → {{ travel.destination }}</td>
+      <td>{{ travel.date_time }}</td>
+      <td>₹{{ travel.price }}</td>
+      <td>{{ travel.available_seats }}</td>
+      <td>
+        {% if travel.available_seats == 0 %}
+        <span class="badge bg-secondary">Fully Booked</span>
+        {% elif travel.travel_id in booked_ids %}
+        <span class="badge bg-danger">Already Booked</span>
+        {% else %}
+        <a href="{% url 'book' travel.pk %}" class="btn btn-sm btn-success"
+          >Book</a
+        >
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="6" class="text-center">No travel options found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

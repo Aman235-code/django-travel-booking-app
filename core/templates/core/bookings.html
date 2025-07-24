@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">My Bookings</h2>
+
+  {% if bookings %}
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for booking in bookings %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ booking.travel_option.travel_type }}:
+            {{ booking.travel_option.source }} → {{ booking.travel_option.destination }}
+          </h5>
+          <p class="card-text">
+            <strong>Date Time:</strong> {{ booking.travel_option.date_time|date:"Y-m-d H:i" }}<br />
+            <strong>Booked On:</strong> {{ booking.booking_date|date:"Y-m-d H:i" }}<br />
+            <strong>Seats:</strong> {{ booking.num_seats }}<br />
+            <strong>Total Price:</strong> ₹{{ booking.total_price }}<br />
+            <strong>Status:</strong>
+            {% if booking.status == 'Cancelled' %}
+              <span class="badge bg-secondary">{{ booking.status }}</span>
+            {% else %}
+              <span class="badge bg-success">{{ booking.status }}</span>
+            {% endif %}
+          </p>
+        </div>
+        {% if booking.status != 'Cancelled' %}
+        <div class="card-footer bg-transparent border-top-0">
+          <a href="{% url 'cancel_booking' booking.pk %}" class="btn btn-danger btn-sm">Cancel</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info">You haven't made any bookings yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
