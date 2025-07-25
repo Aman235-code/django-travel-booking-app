@@ -20,7 +20,6 @@
         font-size: 1.5rem;
       }
       .btn-nav {
-        margin-left: 0.5rem;
         transition: transform 0.2s ease;
       }
       .btn-nav:hover {
@@ -46,7 +45,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto align-items-center">
+          <ul class="navbar-nav ms-auto align-items-lg-center d-grid gap-2 d-lg-flex">
             {% if user.is_authenticated %} 
             {% url 'travel_list' as travel_list_url %} 
             {% url 'my_bookings' as my_bookings_url %} 
@@ -54,26 +53,17 @@
             {% url 'logout' as logout_url %}
 
             <li class="nav-item">
-              <a
-                href="{{ travel_list_url }}"
-                class="btn btn-light btn-sm btn-nav {% if request.path == travel_list_url %}active{% endif %}"
-              >
+              <a href="{{ travel_list_url }}" class="btn btn-light btn-sm btn-nav {% if request.path == travel_list_url %}active{% endif %}">
                 Browse
               </a>
             </li>
             <li class="nav-item">
-              <a
-                href="{{ my_bookings_url }}"
-                class="btn btn-light btn-sm btn-nav {% if request.path == my_bookings_url %}active{% endif %}"
-              >
+              <a href="{{ my_bookings_url }}" class="btn btn-light btn-sm btn-nav {% if request.path == my_bookings_url %}active{% endif %}">
                 My Bookings
               </a>
             </li>
             <li class="nav-item">
-              <a
-                href="{{ profile_url }}"
-                class="btn btn-light btn-sm btn-nav {% if request.path == profile_url %}active{% endif %}"
-              >
+              <a href="{{ profile_url }}" class="btn btn-light btn-sm btn-nav {% if request.path == profile_url %}active{% endif %}">
                 Profile
               </a>
             </li>
@@ -89,10 +79,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a
-                href="{% url 'register' %}"
-                class="btn btn-outline-light btn-sm btn-nav"
-              >
+              <a href="{% url 'register' %}" class="btn btn-outline-light btn-sm btn-nav">
                 Register
               </a>
             </li>
@@ -103,29 +90,21 @@
     </nav>
 
     <div class="toast-container-top">
-      {% if messages %} {% for message in messages %}
-      <div
-        class="toast show w-100 rounded-0 text-white bg-{{ message.tags }}"
-        role="alert"
-        aria-live="assertive"
-        aria-atomic="true"
-      >
-        <div
-          class="d-flex justify-content-between align-items-center px-4 py-2"
-        >
-          <div class="toast-body">{{ message }}</div>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            data-bs-dismiss="toast"
-            aria-label="Close"
-          ></button>
-        </div>
-      </div>
-      {% endfor %} {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="toast show w-100 rounded-0 text-white bg-{{ message.tags }}" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex justify-content-between align-items-center px-4 py-2">
+              <div class="toast-body">{{ message }}</div>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
     </div>
 
-    <main class="container mt-5">{% block content %}{% endblock %}</main>
+    <main class="container mt-5">
+      {% block content %}{% endblock %}
+    </main>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
